@@ -3,10 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/shared/side_menu.dart';
 
-var title = 'Fuerza Libre';
-var asunt = 'Desarrollador Backend Jr.';
-
 class SendMessagePage extends StatefulWidget {
+  String company;
+  String title;
+
+  SendMessagePage(this.company, this.title);
+
   @override
   _SendMessagePageState createState() => _SendMessagePageState();
 }
@@ -59,7 +61,7 @@ class _SendMessagePageState extends State<SendMessagePage> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         child: Text(
-                          'Enviar a: $title',
+                          'Enviar a: ' + widget.company,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
@@ -71,7 +73,7 @@ class _SendMessagePageState extends State<SendMessagePage> {
                       Container(
                         padding: const EdgeInsets.all(5),
                         child: Text(
-                          'Asunto: $asunt',
+                          'Asunto: ' + widget.title,
                           style: TextStyle(fontSize: 20),
                         ),
                       ),
