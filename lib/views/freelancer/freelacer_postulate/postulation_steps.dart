@@ -38,7 +38,7 @@ class _PostulationStepsState extends State<PostulationSteps> {
               offer: widget.offer,
               postulation: Postulation(
                   description: description.text,
-                  desiredPayment: int.parse(income.text)))
+                  desiredPayment: double.parse(income.text)))
           : Theme(
               data: Theme.of(context).copyWith(
                 colorScheme: ColorScheme.light(primary: Colors.blue.shade900),
