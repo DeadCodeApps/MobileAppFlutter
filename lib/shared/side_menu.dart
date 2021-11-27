@@ -91,6 +91,14 @@ class SideMenu extends StatelessWidget {
             },
           ),
           ListTile(
+            title: Text('Mis Anuncios'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.pushNamed(context, '/my_ads');
+              //
+            },
+          ),
+          ListTile(
             title: Text('Entrevistas'),
             onTap: () {
               Navigator.of(context).pop();

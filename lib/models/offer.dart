@@ -13,22 +13,22 @@ String offerToJson(Offer data) => json.encode(data.toJson());
 
 class Offer {
   Offer({
-    this.id,
-    this.title,
-    this.description,
-    this.paymentAmount,
-    this.monthDuration,
-    this.specialty,
-    this.active,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.paymentAmount,
+    required this.monthDuration,
+    required this.specialty,
+    required this.active,
   });
 
-  int? id;
-  String? title;
-  String? description;
-  double? paymentAmount;
-  int? monthDuration;
-  Specialty? specialty;
-  bool? active;
+  final int id;
+  final String title;
+  final String description;
+  final double paymentAmount;
+  final int monthDuration;
+  final Specialty specialty;
+  final bool active;
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
         id: json["id"],
