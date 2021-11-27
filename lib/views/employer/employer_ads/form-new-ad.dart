@@ -1,5 +1,12 @@
+// ignore: file_names
+// ignore: file_names
+// ignore: file_names
+// ignore: file_names
+// ignore_for_file: unnecessary_this
+
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
+import 'package:freelance_world_flutter/models/specialty.dart';
 import 'package:freelance_world_flutter/services/employer_service.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/drawer-ad.dart';
 
@@ -14,23 +21,22 @@ class FormNewAd extends StatefulWidget {
 
 class _FormNewAdState extends State<FormNewAd> {
 
-  // late HttpHelper httpHelper;
 
-  String? puestoBuscadoValue;
-  String? tipoPuestoValue;
-  String? experienciaLaboralValue;
-  String? tituloAnuncioValue;
-  String? lugarValue;
-  String? sueldoValue;
-  String? descripcionValue;
+  // String titleOfferValue = '';
+  // String descriptionOfferValue = '';
+  // double paymentAmountValue = 0;
+  // int monthDurationValue = 0;
+  // String startDateValue = '';
+  // String endDateValue = '';
+  // int specialty = 0;
 
-  final puestoBuscadoController = TextEditingController();
-  final tipoPuestoController = TextEditingController();
-  final experienciaLaboralController = TextEditingController();
-  final tituloAnuncioController = TextEditingController();
-  final lugarController = TextEditingController();
-  final sueldoController = TextEditingController();
-  final descriocionController = TextEditingController();
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final paymentController = TextEditingController();
+  final monthDController = TextEditingController();
+  // final startDate = TextEditingController();
+  final endDateController = TextEditingController();
+  final specialtyController = TextEditingController();
 
   final formkey = GlobalKey<FormState>();
 
@@ -55,58 +61,51 @@ class _FormNewAdState extends State<FormNewAd> {
                     style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue[800],fontSize: 20 ),),
                   Divider(color: Colors.blue[800],),
                   TextFormField(
-                    controller: puestoBuscadoController,
-                    decoration: InputDecoration(labelText: "Puesto buscado"),
+                    controller: titleController,
+                    decoration: InputDecoration(labelText: "Titulo"),
                     onSaved: (value){
-                      puestoBuscadoValue = value;
+                      // titleOfferValue = value!;
                     },
                   ),
                   TextFormField(
-                    controller: tipoPuestoController,
-                    decoration: InputDecoration(labelText: "Tipo de puesto"),
+                    controller: descriptionController,
+                    decoration: InputDecoration(labelText: "Descripcion"),
                     onSaved: (value){
-                      tipoPuestoValue = value;
+                      // descriptionOfferValue = value!;
                     },
                   ),
                   TextFormField(
-                  controller: experienciaLaboralController,
-                  decoration: InputDecoration(labelText: "Experiencia laboral"),
+                  controller: paymentController,
+                  decoration: InputDecoration(labelText: "Monto de pago"),
                   onSaved: (value){
-                    experienciaLaboralValue = value;
+                    // paymentAmountValue = double.parse(value!);
                   },
                   ),
                   TextFormField(
-                  controller: tituloAnuncioController,
-                  decoration: InputDecoration(labelText: "Titulo del anuncio"),
+                  controller: monthDController,
+                  decoration: InputDecoration(labelText: "Meses de duración"),
                   onSaved: (value){
-                    tituloAnuncioValue = value;
+                    // monthDurationValue = int.parse(value!);
                   },
                   ),
                   TextFormField(
-                  controller: lugarController,
-                  decoration: InputDecoration(labelText: "Lugar"),
+                  controller: endDateController,
+                  decoration: InputDecoration(labelText: "Fecha de termino"),
                   onSaved: (value){
-                    lugarValue = value;
+                    // endDateValue = value!;
                   },
                   ),
                   TextFormField(
-                  controller: sueldoController,
-                  decoration: InputDecoration(labelText: "Sueldo"),
+                  controller: specialtyController,
+                  decoration: InputDecoration(labelText: "Especialidad"),
                   onSaved: (value){
-                    sueldoValue = value;
-                    },
-                  ),
-                  TextFormField(
-                  controller: descriocionController,
-                  decoration: InputDecoration(labelText: "Descripcion"),
-                  onSaved: (value){
-                    descripcionValue = value;
+                    // specialty = int.parse(value!);
                     },
                   ),
                   ElevatedButton(
                     child: Text("Crear"),
                     onPressed: (){
-                     
+                     createOffer();
                     },
                     )
                 ]
@@ -121,13 +120,20 @@ class _FormNewAdState extends State<FormNewAd> {
     );
   }
 
-  // void createOffer(){
-  //   final newOffer = new Offer(
-  //     title: this.tituloAnuncioValue, 
-  //     description: this.descripcionValue, 
-  //     paymentAmount: paymentAmount, 
-  //     monthDuration: monthDuration, 
-  //     specialty: specialty)
-  //   httpHelper.createoffer(offer)
-  // }
+  void createOffer(){
+    final newOffer = {
+      "title": this.titleController.text,
+      "description": this.descriptionController.text,
+      "paymentAmount": double.parse(this.paymentController.text),
+      "monthDuration": int.parse(this.monthDController.text),
+      "startDate": DateTime.now(),
+      "endDate": DateTime.now(),///////////////////////////////////////////////me falta aqui
+      "specialtyId": int.parse(this.specialtyController.text)
+      };
+
+
+    print(newOffer);
+    EmployerService.createOffer(newOffer);
+  }
+
 }

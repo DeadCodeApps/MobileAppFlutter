@@ -56,7 +56,7 @@ class Freelancer {
         instagramLink: json["instagramLink"],
         twitterLink: json["twitterLink"],
         imageUrl: json["imageUrl"],
-        birthDate: DateTime.parse(json["birthDate"]),
+        birthDate: (json["birthDate"]),
         phone: json["phone"],
         description: json["description"],
         profession: json["profession"],
