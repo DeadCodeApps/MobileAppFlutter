@@ -107,10 +107,10 @@ class SideMenu extends StatelessWidget {
             onTap: () {
               if (userType == "FREELANCER") {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(context, '/profile');
+                Navigator.pushNamed(context, '/profile_freelancer');
               } else if (userType == "EMPLOYER") {
                 Navigator.of(context).pop();
-                Navigator.pushNamed(context, '/home');
+                Navigator.pushNamed(context, '/profile_employer');
               }
               //
             },
