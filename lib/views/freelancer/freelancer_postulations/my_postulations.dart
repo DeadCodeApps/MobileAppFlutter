@@ -1,30 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:isolate';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:freelance_world_flutter/components/postulation_card.dart';
+import 'package:freelance_world_flutter/models/postulation.dart';
+import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/shared/side_menu.dart';
-import 'package:freelance_world_flutter/views/freelancer/send_message/send_message_page.dart';
-
-var status_0 = 'Rechazado';
-var status_1 = 'Pendiente';
-var type_0 = 'Part-Time';
-var type_1 = 'Full-Time';
-
-var company_1 = "W.W. Technology";
-var location_1 = 'San Borja, Lima';
-var title_1 = 'Desarrollador BackEnd';
-var amount_1 = '2500';
-
-var company_2 = "Polar Inc.";
-var location_2 = 'Miraflores, Lima';
-var title_2 = 'Desarrollador FrontEnd Vue';
-var amount_2 = '2000';
-
-var company_3 = "Alpha Technology";
-var location_3 = 'La Molina, Lima';
-var title_3 = 'Desarrollador FullStack';
-var amount_3 = '5500';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:freelance_world_flutter/theme/constants.dart';
 
 class MyPostulationPage extends StatefulWidget {
   @override
@@ -32,6 +16,39 @@ class MyPostulationPage extends StatefulWidget {
 }
 
 class _MyPostulationPageState extends State<MyPostulationPage> {
+  late final List<Postulation> postulations;
+
+  List<Postulation> parsePostulations(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed
+        .map<Postulation>((json) => Postulation.fromJson(json))
+        .toList();
+  }
+
+  Future<List<Postulation>> getPostulations() async {
+    var httpClient = AuthenticatedHttpClient();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final int freelancerId = int.parse(prefs.getString('id')!);
+    final response = await httpClient.get(
+      Uri.parse(
+          "https://freelance-world.herokuapp.com/api/freelancers/$freelancerId/postulations"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return parsePostulations(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load postulations');
+    }
+  }
+
   @override
   initState() {
     super.initState();
@@ -41,305 +58,52 @@ class _MyPostulationPageState extends State<MyPostulationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
-          "assets/logo.png",
-          height: 100.0,
-          width: 50.0,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+        title: Text('FreelanceWorld'),
+        actions: [],
+        backgroundColor: primaryColor,
       ),
       drawer: MenuPage(),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-          TextEditingController().clear();
+      body: FutureBuilder<List<Postulation>>(
+        future: getPostulations(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) print(snapshot.error);
+          return snapshot.hasData
+              ? PostulationList(
+                  postulations: snapshot.data ?? [],
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
         },
-        child: ListView(children: [
-          const SizedBox(width: 30),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(
-                      color: Colors.grey, blurRadius: 10, offset: Offset(0, 5))
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //  TITLE
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    child: const Text(
-                      'Mis postulaciones',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 35,
-                          color: Color.fromRGBO(81, 171, 216, 1)),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 10,
-                              offset: Offset(0, 5))
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "$location_1",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text("$title_1",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    color: Color.fromRGBO(81, 171, 216, 1),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("$company_1",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueGrey[500],
-                                  )),
-                              Row(
-                                children: [
-                                  IconButton(
-                                      color: Colors.blue,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SendMessagePage(
-                                                        company_1, title_1)));
-                                      },
-                                      icon: Icon(Icons.message)),
-                                  Text("$status_1",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green[500],
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("$type_1",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  )),
-                              Text("S/." + "$amount_1",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 10,
-                              offset: Offset(0, 5))
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "$location_2",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text("$title_2",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    color: Color.fromRGBO(81, 171, 216, 1),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("$company_2",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueGrey[500],
-                                  )),
-                              Row(
-                                children: [
-                                  IconButton(
-                                      color: Colors.black,
-                                      onPressed: () {},
-                                      icon: Icon(Icons.message)),
-                                  Text("$status_0",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red[500],
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("$type_0",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  )),
-                              Text("S/." + "$amount_2",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 10,
-                              offset: Offset(0, 5))
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "$location_3",
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              Text("$title_3",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 25,
-                                    color: Color.fromRGBO(81, 171, 216, 1),
-                                  )),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("$company_3",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blueGrey[500],
-                                  )),
-                              Row(
-                                children: [
-                                  IconButton(
-                                      color: Colors.blue,
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SendMessagePage(
-                                                        company_3, title_3)));
-                                      },
-                                      icon: Icon(Icons.message)),
-                                  Text("$status_1",
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green[500],
-                                      )),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("$type_1",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  )),
-                              Text("S/." + "$amount_3",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.grey,
-                                  )),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ]),
       ),
+    );
+  }
+}
+
+class PostulationList extends StatelessWidget {
+  final List<Postulation> postulations;
+  const PostulationList({required this.postulations});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: postulations == null ? 0 : postulations.length,
+      itemBuilder: (context, i) {
+        return Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    child: PostulationCard(
+                      postulation: postulations[i],
+                    ),
+                  )),
+            )
+          ],
+        );
+      },
     );
   }
 }

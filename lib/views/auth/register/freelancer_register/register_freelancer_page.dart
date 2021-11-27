@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/freelancer.dart';
 import 'package:freelance_world_flutter/theme/constants.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:freelance_world_flutter/views/auth/Login/login_page.dart';
+import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -13,12 +14,14 @@ class RegisterFreelancerPage extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterFreelancerPage> {
+  late DateTime? selectedDate;
+  bool _isObscure = true;
   final emailController = TextEditingController();
+  final dateController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
-  final birthdateController = DateRangePickerController();
   final phoneController = TextEditingController();
   final descriptionController = TextEditingController();
   final professionController = TextEditingController();
@@ -78,42 +81,69 @@ class RegisterFormState extends State<RegisterFreelancerPage> {
               ),
               TextFormField(
                 controller: emailController,
-                decoration:
-                    const InputDecoration(labelText: "name@example.com"),
+                decoration: const InputDecoration(labelText: "Correo"),
               ),
               TextFormField(
                 controller: usernameController,
-                decoration: const InputDecoration(labelText: "Username"),
+                decoration: const InputDecoration(labelText: "Usuario"),
               ),
               TextFormField(
                 controller: passwordController,
-                decoration: const InputDecoration(labelText: "Password"),
+                decoration: InputDecoration(
+                  labelText: "Contraseña",
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                ),
+                obscureText: _isObscure,
+                enableSuggestions: false,
+                autocorrect: false,
               ),
               TextFormField(
                 controller: firstnameController,
-                decoration: const InputDecoration(labelText: "First name"),
+                decoration: const InputDecoration(labelText: "Nombres"),
               ),
               TextFormField(
                 controller: lastnameController,
-                decoration: const InputDecoration(labelText: "Last name"),
+                decoration: const InputDecoration(labelText: "Apellidos"),
               ),
-              SfDateRangePicker(
-                controller: birthdateController,
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-              ),
+              TextFormField(
+                  controller: dateController,
+                  decoration:
+                      const InputDecoration(labelText: "Fecha de cumpleaños"),
+                  onTap: () async {
+                    selectedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2025));
+                    if (selectedDate != null) {
+                      String formattedDate =
+                          DateFormat('dd-MM-yyyy').format(selectedDate!);
+                      setState(() {
+                        dateController.text = formattedDate;
+                      });
+                    }
+                  }),
               TextFormField(
                 controller: phoneController,
-                decoration: const InputDecoration(labelText: "Phone number"),
+                decoration: const InputDecoration(labelText: "Número"),
               ),
-              TextFormField(
+              TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(labelText: "Decription"),
+                decoration: const InputDecoration(labelText: "Descripción"),
               ),
               TextFormField(
                 controller: professionController,
-                decoration: const InputDecoration(labelText: "Profession"),
+                decoration: const InputDecoration(labelText: "Profesión"),
               ),
+              const SizedBox(height: 10),
               ElevatedButton(
                 child: const Text("Registrar"),
                 onPressed: () {
@@ -123,12 +153,14 @@ class RegisterFormState extends State<RegisterFreelancerPage> {
                       password: passwordController.text,
                       firstname: firstnameController.text,
                       lastname: lastnameController.text,
-                      birthDate: DateTime.parse(
-                          birthdateController.selectedDate!.toIso8601String()),
+                      birthDate: selectedDate!.toIso8601String(),
                       profession: professionController.text,
                       description: descriptionController.text,
                       phone: phoneController.text);
                   postFreelancer(freelancer);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const LoginPage();
+                  }));
                 },
               )
             ]),

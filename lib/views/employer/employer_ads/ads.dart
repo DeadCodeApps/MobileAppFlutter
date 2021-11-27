@@ -253,7 +253,7 @@ class _AdRowState extends State<AdRow> {
             Row(
               
               children: [
-                Text(widget.offer.description,
+                Text(widget.offer.description!,
                 style: TextStyle(fontSize: 10,color: Colors.grey),)
               ],
             ),
@@ -261,7 +261,7 @@ class _AdRowState extends State<AdRow> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(widget.offer.title,
+                Text(widget.offer.title!,
                 style: TextStyle(fontSize: 20, color: Colors.blue[800], fontWeight: FontWeight.bold))
               ],
             ),
@@ -280,7 +280,7 @@ class _AdRowState extends State<AdRow> {
               children: [
                 Text("S/." + widget.offer.paymentAmount.toString(),
                 style: TextStyle(fontSize: 10, color: Colors.grey)),
-                Text(widget.offer.specialty.name,
+                Text(widget.offer.specialty!.name,
                 style: TextStyle(fontSize: 10, color: Colors.grey))
               ],
             ),

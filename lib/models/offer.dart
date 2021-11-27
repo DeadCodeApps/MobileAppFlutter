@@ -13,22 +13,26 @@ String offerToJson(Offer data) => json.encode(data.toJson());
 
 class Offer {
   Offer({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.paymentAmount,
-    required this.monthDuration,
-    required this.specialty,
-    required this.active,
+    this.id,
+    this.title,
+    this.description,
+    this.paymentAmount,
+    this.monthDuration,
+    this.specialty,
+    this.startDate,
+    this.endDate,
+    this.active,
   });
 
-  final int id;
-  final String title;
-  final String description;
-  final double paymentAmount;
-  final int monthDuration;
-  final Specialty specialty;
-  final bool active;
+  int? id;
+  String? title;
+  String? description;
+  double? paymentAmount;
+  int? monthDuration;
+  Specialty? specialty;
+  DateTime? startDate;
+  DateTime? endDate;
+  bool? active;
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
         id: json["id"],
@@ -36,6 +40,8 @@ class Offer {
         description: json["description"],
         paymentAmount: json["paymentAmount"],
         monthDuration: json["monthDuration"],
+        startDate: DateTime.parse(json['startDate']),
+        endDate: DateTime.parse(json['endDate']),
         specialty: Specialty.fromJson(json["specialty"]),
         active: json["active"],
       );
@@ -46,6 +52,8 @@ class Offer {
         "description": description,
         "paymentAmount": paymentAmount,
         "monthDuration": monthDuration,
+        "startDate": startDate,
+        "endDate": endDate,
         "specialty": specialty == null ? null : specialty!.toJson(),
         "active": active,
       };
