@@ -22,7 +22,6 @@ class _FreelancerProfile extends State<FreelancerProfile> {
   Future<Freelancer> getUserFreelancerById() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final int freelancerId = int.parse(prefs.getString('id')!);
-    //return getFreelancerById(freelancerId.toString());
     return getFreelancerById(freelancerId.toString());
   }
 
