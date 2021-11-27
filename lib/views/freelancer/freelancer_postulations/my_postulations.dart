@@ -5,6 +5,7 @@ import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/shared/side_menu.dart';
 import 'package:freelance_world_flutter/views/freelancer/send_message/send_message_page.dart';
+import 'package:freelance_world_flutter/theme/constants.dart';
 
 var status_0 = 'Rechazado';
 var status_1 = 'Pendiente';
@@ -41,13 +42,9 @@ class _MyPostulationPageState extends State<MyPostulationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
-          "assets/logo.png",
-          height: 100.0,
-          width: 50.0,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+        title: Text('FreelanceWorld'),
+        actions: [],
+        backgroundColor: primaryColor,
       ),
       drawer: MenuPage(),
       body: GestureDetector(
