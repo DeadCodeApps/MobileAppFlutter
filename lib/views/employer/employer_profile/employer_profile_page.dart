@@ -3,32 +3,33 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/components/offer_card.dart';
-import 'package:freelance_world_flutter/components/profile_freelancer.dart';
-import 'package:freelance_world_flutter/models/freelancer.dart';
+import 'package:freelance_world_flutter/components/profile_employer.dart';
+import 'package:freelance_world_flutter/models/employer.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
-import 'package:freelance_world_flutter/services/freelancer_service.dart';
+import 'package:freelance_world_flutter/services/employer_service.dart';
 import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/shared/side_menu.dart';
 import 'package:freelance_world_flutter/theme/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FreelancerProfile extends StatefulWidget {
+class EmployerProfile extends StatefulWidget {
   @override
-  _FreelancerProfile createState() => _FreelancerProfile();
+  _EmployerProfile createState() => _EmployerProfile();
 }
 
-class _FreelancerProfile extends State<FreelancerProfile> {
-  late Freelancer freelancer;
-  Future<Freelancer> getUserFreelancerById() async {
+class _EmployerProfile extends State<EmployerProfile> {
+  late Employer employer;
+  Future<Employer> getUserEmployerById() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final int freelancerId = int.parse(prefs.getString('id')!);
-    return getFreelancerById(freelancerId.toString());
+    final int employerId = int.parse(prefs.getString('id')!);
+    //return getEmployerById(employerId.toString());
+    return getEmployerById(employerId.toString());
   }
 
   @override
   initState() {
     super.initState();
-    getUserFreelancerById();
+    getUserEmployerById();
   }
 
   @override
@@ -40,13 +41,13 @@ class _FreelancerProfile extends State<FreelancerProfile> {
         backgroundColor: primaryColor,
       ),
       drawer: MenuPage(),
-      body: FutureBuilder<Freelancer>(
-        future: getUserFreelancerById(),
+      body: FutureBuilder<Employer>(
+        future: getUserEmployerById(),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
           return snapshot.hasData
-              ? ProfileFreelancer(
-                  freelancer: snapshot.data ?? Freelancer(),
+              ? ProfileEmployer(
+                  employer: snapshot.data ?? Employer(),
                 )
               : Center(
                   child: CircularProgressIndicator(),
