@@ -146,12 +146,12 @@ class OfferDetailed extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Flexible(
-                    child: Text(
-                      "Inicio: " + formatter.format(offer.startDate!),
-                      style: TextStyle(fontSize: 17.0, color: Colors.black87),
-                    ),
-                  ),
+                  // Flexible(
+                  //   child: Text(
+                  //     "Inicio: " + formatter.format(String.parse offer.startDate!),
+                  //     style: TextStyle(fontSize: 17.0, color: Colors.black87),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -160,12 +160,12 @@ class OfferDetailed extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Flexible(
-                    child: Text(
-                      "Fin: " + formatter.format(offer.endDate!),
-                      style: TextStyle(fontSize: 17.0, color: Colors.black87),
-                    ),
-                  ),
+                  // Flexible(
+                  //   child: Text(
+                  //     "Fin: " + formatter.format(offer.endDate!),
+                  //     style: TextStyle(fontSize: 17.0, color: Colors.black87),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

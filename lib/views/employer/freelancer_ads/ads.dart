@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:freelance_world_flutter/services/employer_service.dart';
 // import 'package:stateful_widget/pages/ads/form-new-ad.dart';
 // import 'package:stateful_widget/utils/http.helper.dart';
-import 'package:freelance_world_flutter/services/employer_service.dart';
+import 'package:freelance_world_flutter/services/freelancer_service.dart';
 import 'package:freelance_world_flutter/shared/side_menu.dart';
-import 'package:freelance_world_flutter/views/employer/employer_ads/drawer-ad.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/form-new-ad.dart';
+// import 'package:freelance_world_flutter/views/freelancer/freelancer_ads/drawer-ad.dart';
+// import 'package:freelance_world_flutter/views/freelancer/freelancer_ads/form-new-ad.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Ads extends StatefulWidget {
   Ads({Key? key}): super(key: key);
@@ -55,7 +56,7 @@ class _AdsState extends State<Ads> {
         //     print("se agrego manin");
         //   },
         // ),
-        drawer: Drawer(child: MenuPage(),)
+        drawer: Drawer(child: MenuPage())
       );
   }
 
@@ -124,19 +125,13 @@ class _ListAdsState extends State<ListAds> {
   // late HttpHelper httpHelper;
   late EmployerService employerService;
   late List offers;
-  // SharedPreferences prefs = SharedPreferences.getInstance() as SharedPreferences;
-  String? idEmployer = '';
-
   
   @override
   void initState() {
     // TODO: implement initState
-    // idEmployer = prefs.getString('id');
-    // getUserID();
-    // print('veamos que id tiene el employer', idEmployer)
     offers = [];
-    employerService = EmployerService();
     // httpHelper = HttpHelper();
+    employerService = EmployerService();
     // fetchOffers();
     super.initState();
   }
@@ -167,16 +162,8 @@ class _ListAdsState extends State<ListAds> {
     });
   }).catchError((onError)=> print(onError));
 
-  }
-
-  void getUserID() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // idEmployer =  prefs.getString('id');
-  }
-  
-  
 }
-
+}
 
 class NoAd extends StatelessWidget {
   const NoAd({Key? key}) : super(key: key);
@@ -208,6 +195,7 @@ class NoAd extends StatelessWidget {
                   FloatingActionButton(
                     child: Icon(Icons.add),
                     onPressed: (){
+                      print("se agrego manin");
                       print("click agregar anuncio");
                       _goToFormNewAd(context);
                     },

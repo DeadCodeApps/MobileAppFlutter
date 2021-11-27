@@ -1,27 +1,20 @@
-// To parse this JSON data, do
-//
-//     final offer = offerFromJson(jsonString);
-
-// ignore_for_file: unnecessary_null_comparison, prefer_null_aware_operators
 
 import 'package:freelance_world_flutter/models/specialty.dart';
 import 'dart:convert';
 
-Offer offerFromJson(String str) => Offer.fromJson(json.decode(str));
+OfferPost offerFromJson(String str) => OfferPost.fromJson(json.decode(str));
 
-String offerToJson(Offer data) => json.encode(data.toJson());
+String offerToJson(OfferPost data) => json.encode(data.toJson());
 
-class Offer {
-  Offer({
-    this.id,
+class OfferPost {
+  OfferPost({
     this.title,
     this.description,
     this.paymentAmount,
     this.monthDuration,
-    this.specialty,
+    this.specialtyId,
     this.startDate,
     this.endDate,
-    this.active,
   });
 
     int? id;
@@ -29,32 +22,28 @@ class Offer {
   String? description;
   double? paymentAmount;
   int? monthDuration;
-  Specialty? specialty;
+  int? specialtyId;
   String? startDate;
   String? endDate;
   bool? active;
 
-  factory Offer.fromJson(Map<String, dynamic> json) => Offer(
-        id: json["id"],
+  factory OfferPost.fromJson(Map<String, dynamic> json) => OfferPost(
         title: json["title"],
         description: json["description"],
         paymentAmount: json["paymentAmount"],
         monthDuration: json["monthDuration"],
         startDate: json['startDate'],
         endDate: json['endDate'],
-        specialty: Specialty.fromJson(json["specialty"]),
-        active: json["active"],
+        specialtyId: json["specialtyId"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "title": title,
         "description": description,
         "paymentAmount": paymentAmount,
         "monthDuration": monthDuration,
         "startDate": startDate,
         "endDate": endDate,
-        "specialty": specialty == null ? null : specialty!.toJson(),
-        "active": active,
+        "specialtyId": specialtyId,
       };
 }

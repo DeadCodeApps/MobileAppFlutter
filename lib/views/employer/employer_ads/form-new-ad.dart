@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
+import 'package:freelance_world_flutter/models/offer_post.dart';
 import 'package:freelance_world_flutter/services/employer_service.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/ads.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/drawer-ad.dart';
@@ -46,9 +47,9 @@ class _FormNewAdState extends State<FormNewAd> {
 
 
 
-  Future<Offer> postOffer(Offer offer) async {
+  Future<OfferPost> postOffer(OfferPost offer) async {
     final response = await http.post(
-      Uri.parse('https://freelance-world.herokuapp.com/api/freelancers'),
+      Uri.parse('https://freelance-world.herokuapp.com/api/employers/10/offers'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -59,14 +60,17 @@ class _FormNewAdState extends State<FormNewAd> {
         'startDate': offer.startDate,
         'endDate': offer.endDate,
         'monthDuration': offer.monthDuration,
-        'specialty': offer.specialty
+        'specialtyId': offer.specialtyId
       }),
     );
 
     if (response.statusCode == 200) {
-      return Offer.fromJson(jsonDecode(response.body));
+      print("se grabó");
+      return OfferPost.fromJson(jsonDecode(response.body));
+      
     } else {
-      throw Exception('Failed to create freelancer.');
+      throw Exception('Failed to create offer.');
+      
     }
   }
 
@@ -138,12 +142,25 @@ class _FormNewAdState extends State<FormNewAd> {
                   ElevatedButton(
                     child: Text("Crear"),
                     onPressed: (){
-                      Offer offer = Offer(
+                      OfferPost offer = OfferPost(
                       title: this.titleController.text,
                       description: this.titleController.text,
                       paymentAmount: double.parse(this.paymentAmountController.text),
-                      startDate: DateTime.now());
-                  postOffer(offer);
+                      startDate: DateTime.now().toIso8601String(),
+                      endDate: this.endDateController.text,
+                      specialtyId: 1
+                      );
+
+                      // var obj= {
+                      //   "title": this.titleController.text,
+                      //   "description": this.titleController.text,
+                      //   "paymentAmount": double.parse(this.paymentAmountController.text),
+                      //   "startDate": DateTime.now().toIso8601String(),
+                      //   "endDate": this.endDateController.text,
+                      //   "specialty": 1
+
+                      // }
+                  postOffer(offer).catchError((onError)=> print(onError));
                   // Navigator.push(context, MaterialPageRoute(builder: (context) {
                   //   return const Ads();
                   // }));

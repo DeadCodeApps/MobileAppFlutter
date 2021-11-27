@@ -64,30 +64,30 @@ class _PostulationStepsState extends State<PostulationSteps> {
                 onStepCancel: currentStep == 0
                     ? null
                     : () => setState(() => currentStep -= 1),
-                controlsBuilder: (context, ControlsDetails controls) {
-                  final isLastStep = currentStep == getSteps().length - 1;
-                  return Container(
-                    margin: EdgeInsets.only(top: 50),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            child: Text(isLastStep ? 'Finalizar' : 'Continuar'),
-                            onPressed: controls.onStepContinue,
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        if (currentStep != 0)
-                          Expanded(
-                            child: ElevatedButton(
-                              child: Text('Atrás'),
-                              onPressed: controls.onStepCancel,
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                },
+                // controlsBuilder: (context, ControlsDetails controls) {
+                //   final isLastStep = currentStep == getSteps().length - 1;
+                //   return Container(
+                //     margin: EdgeInsets.only(top: 50),
+                //     child: Row(
+                //       children: [
+                //         Expanded(
+                //           child: ElevatedButton(
+                //             child: Text(isLastStep ? 'Finalizar' : 'Continuar'),
+                //             onPressed: controls.onStepContinue,
+                //           ),
+                //         ),
+                //         const SizedBox(width: 12),
+                //         if (currentStep != 0)
+                //           Expanded(
+                //             child: ElevatedButton(
+                //               child: Text('Atrás'),
+                //               onPressed: controls.onStepCancel,
+                //             ),
+                //           ),
+                //       ],
+                //     ),
+                //   );
+                // },
               ),
             ),
     );
