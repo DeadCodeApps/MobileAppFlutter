@@ -39,7 +39,7 @@ class Freelancer {
   String? instagramLink;
   String? twitterLink;
   String? imageUrl;
-  DateTime? birthDate;
+  String? birthDate;
   String? phone;
   String? description;
   String? profession;
@@ -56,7 +56,7 @@ class Freelancer {
         instagramLink: json["instagramLink"],
         twitterLink: json["twitterLink"],
         imageUrl: json["imageUrl"],
-        birthDate: DateTime.parse(json["birthDate"]),
+        birthDate: json["birthDate"],
         phone: json["phone"],
         description: json["description"],
         profession: json["profession"],
@@ -74,7 +74,7 @@ class Freelancer {
         "instagramLink": instagramLink,
         "twitterLink": twitterLink,
         "imageUrl": imageUrl,
-        "birthDate": birthDate?.toIso8601String(),
+        "birthDate": birthDate,
         "phone": phone,
         "description": description,
         "profession": profession,

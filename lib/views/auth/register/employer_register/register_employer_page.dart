@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/employer.dart';
 import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/theme/constants.dart';
+import 'package:freelance_world_flutter/views/auth/Login/login_page.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -13,6 +14,7 @@ class RegisterEmployerPage extends StatefulWidget {
 }
 
 class RegisterFormState extends State<RegisterEmployerPage> {
+  bool _isObscure = true;
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
@@ -87,11 +89,25 @@ class RegisterFormState extends State<RegisterEmployerPage> {
               ),
               TextFormField(
                 controller: usernameController,
-                decoration: const InputDecoration(labelText: "Username"),
+                decoration: const InputDecoration(labelText: "Usuario"),
               ),
               TextFormField(
                 controller: passwordController,
-                decoration: const InputDecoration(labelText: "Contraseña"),
+                decoration: InputDecoration(
+                  labelText: "Contraseña",
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _isObscure = !_isObscure;
+                      });
+                    },
+                  ),
+                ),
+                obscureText: _isObscure,
+                enableSuggestions: false,
+                autocorrect: false,
               ),
               TextFormField(
                 controller: firstnameController,
@@ -129,6 +145,7 @@ class RegisterFormState extends State<RegisterEmployerPage> {
                 decoration: const InputDecoration(
                     labelText: "Correo de contacto de la empresa"),
               ),
+              const SizedBox(height: 10),
               ElevatedButton(
                 child: const Text("Registrar"),
                 onPressed: () {
@@ -145,6 +162,9 @@ class RegisterFormState extends State<RegisterEmployerPage> {
                       companyWeb: companyWebController.text,
                       contactCompanyEmail: contactCompanyEmailController.text);
                   postEmployer(employer);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const LoginPage();
+                  }));
                 },
               )
             ]),
