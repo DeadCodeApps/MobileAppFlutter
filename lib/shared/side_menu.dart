@@ -18,10 +18,14 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   String? email;
   String? fullname;
+  String? userId;
+  String? userType;
 
   Future<bool> getUserData() async {
     email = await getUserEmail();
     fullname = await getUserFullName();
+    userId = await getUserId();
+    userType = await getUsertype(userId!);
     return true;
   }
 
@@ -37,7 +41,11 @@ class _MenuPageState extends State<MenuPage> {
     return FutureBuilder(
         future: getUserData(),
         builder: (context, snapshot) {
-          return SideMenu(email: email ?? '', fullname: fullname ?? '');
+          return SideMenu(
+              email: email ?? '',
+              fullname: fullname ?? '',
+              userId: userId ?? '',
+              userType: userType ?? '');
         });
   }
 }
@@ -45,11 +53,15 @@ class _MenuPageState extends State<MenuPage> {
 class SideMenu extends StatelessWidget {
   final String email;
   final String fullname;
+  final String userId;
+  final String userType;
 
   const SideMenu({
     Key? key,
     required this.email,
     required this.fullname,
+    required this.userId,
+    required this.userType,
   }) : super(key: key);
 
   @override
@@ -91,26 +103,15 @@ class SideMenu extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Entrevistas'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/interviews_postulant');
-              //
-            },
-          ),
-          ListTile(
             title: Text('Mi Cuenta'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, '');
-              //
-            },
-          ),
-          ListTile(
-            title: Text('Configuracion'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, '');
+              if (userType == "FREELANCER") {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/profile');
+              } else if (userType == "EMPLOYER") {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/home');
+              }
               //
             },
           ),
