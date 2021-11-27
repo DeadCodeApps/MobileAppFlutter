@@ -19,6 +19,8 @@ class Offer {
     this.paymentAmount,
     this.monthDuration,
     this.specialty,
+    this.startDate,
+    this.endDate,
     this.active,
   });
 
@@ -28,6 +30,8 @@ class Offer {
   double? paymentAmount;
   int? monthDuration;
   Specialty? specialty;
+  DateTime? startDate;
+  DateTime? endDate;
   bool? active;
 
   factory Offer.fromJson(Map<String, dynamic> json) => Offer(
@@ -36,6 +40,8 @@ class Offer {
         description: json["description"],
         paymentAmount: json["paymentAmount"],
         monthDuration: json["monthDuration"],
+        startDate: DateTime.parse(json['startDate']),
+        endDate: DateTime.parse(json['endDate']),
         specialty: Specialty.fromJson(json["specialty"]),
         active: json["active"],
       );
@@ -46,6 +52,8 @@ class Offer {
         "description": description,
         "paymentAmount": paymentAmount,
         "monthDuration": monthDuration,
+        "startDate": startDate,
+        "endDate": endDate,
         "specialty": specialty == null ? null : specialty!.toJson(),
         "active": active,
       };

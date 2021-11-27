@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:freelance_world_flutter/models/offer.dart';
 import 'package:freelance_world_flutter/theme/constants.dart';
+import 'package:freelance_world_flutter/views/freelancer/freelacer_postulate/offer_detail_page.dart';
 
 class OfferCard extends StatelessWidget {
   final Offer offer;
@@ -15,12 +16,8 @@ class OfferCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print(offer.id);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) {
-        //     return const RegisterEmployerPage();
-        //   }),
-        // );
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => OfferDetail(offer: offer)));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),

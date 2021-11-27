@@ -78,7 +78,7 @@ class SideMenu extends StatelessWidget {
             title: Text('Postular'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.pushNamed(context, '');
+              Navigator.pushNamed(context, '/home');
               //
             },
           ),
