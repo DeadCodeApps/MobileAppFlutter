@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
 import 'package:freelance_world_flutter/models/specialty.dart';
 import 'package:freelance_world_flutter/services/employer_service.dart';
+import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/drawer-ad.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 
@@ -21,6 +23,41 @@ class FormNewAd extends StatefulWidget {
 
 class _FormNewAdState extends State<FormNewAd> {
 
+  static Future<Offer> createOffer(var offer) async {
+
+    final String postUrl = "https://freelance-world.herokuapp.com/api/";
+    var httpClient = AuthenticatedHttpClient();
+    
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    
+    final int employerId = int.parse(prefs.getString('id')!);
+
+    String uri2 = "$API_URL/api/employer/$employerId/offers";
+
+    var response = await httpClient.post(
+      Uri.parse(uri2),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        // 'title': offer.title,
+        // 'description': offer.description,
+        // 'paymentAmount': offer.paymentAmount,
+        // 'monthDuration': offer.monthDuration,
+        // 'startDate': offer.startDate,
+        // 'endDate': offer.endDate,
+        // 'specialtyId': offer.specialtyId
+        'offer': offer
+      }),
+    );
+    print("Aqui 71");
+
+    if (response.statusCode == 200) {
+      return Offer.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create freelancer.');
+    }
+  }
 
   // String titleOfferValue = '';
   // String descriptionOfferValue = '';
@@ -35,7 +72,7 @@ class _FormNewAdState extends State<FormNewAd> {
   final paymentController = TextEditingController();
   final monthDController = TextEditingController();
   // final startDate = TextEditingController();
-  final endDateController = TextEditingController();
+  final endDateController = DateRangePickerController();
   final specialtyController = TextEditingController();
 
   final formkey = GlobalKey<FormState>();
@@ -88,13 +125,11 @@ class _FormNewAdState extends State<FormNewAd> {
                     // monthDurationValue = int.parse(value!);
                   },
                   ),
-                  TextFormField(
-                  controller: endDateController,
-                  decoration: InputDecoration(labelText: "Fecha de termino"),
-                  onSaved: (value){
-                    // endDateValue = value!;
-                  },
-                  ),
+                  SfDateRangePicker(
+                    controller: endDateController,
+                    view: DateRangePickerView.month,
+                    selectionMode: DateRangePickerSelectionMode.single,
+              ),
                   TextFormField(
                   controller: specialtyController,
                   decoration: InputDecoration(labelText: "Especialidad"),
@@ -127,7 +162,7 @@ class _FormNewAdState extends State<FormNewAd> {
       "paymentAmount": double.parse(this.paymentController.text),
       "monthDuration": int.parse(this.monthDController.text),
       "startDate": DateTime.now(),
-      "endDate": DateTime.now(),///////////////////////////////////////////////me falta aqui
+      "endDate": this.endDateController,///////////////////////////////////////////////me falta aqui
       "specialtyId": int.parse(this.specialtyController.text)
       };
 
@@ -136,4 +171,7 @@ class _FormNewAdState extends State<FormNewAd> {
     EmployerService.createOffer(newOffer);
   }
 
+}
+
+class SharedPreferences {
 }
