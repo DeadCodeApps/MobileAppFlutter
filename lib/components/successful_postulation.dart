@@ -27,7 +27,7 @@ class SuccessfulPostulation extends StatelessWidget {
     final int offerId = offer.id!;
     String uri =
         postUrl + "freelancers/$freelancerId/offers/$offerId/postulations";
-    var response = await http.post(
+    var response = await httpClient.post(
       Uri.parse(uri),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
