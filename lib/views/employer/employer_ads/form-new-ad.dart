@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
 import 'package:freelance_world_flutter/models/offer_post.dart';
 import 'package:freelance_world_flutter/services/employer_service.dart';
+import 'package:freelance_world_flutter/shared/env.dart';
+import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/ads.dart';
 import 'package:freelance_world_flutter/views/employer/employer_ads/drawer-ad.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -19,23 +22,6 @@ class FormNewAd extends StatefulWidget {
 
 class _FormNewAdState extends State<FormNewAd> {
 
-  // late HttpHelper httpHelper;
-
-  // String? puestoBuscadoValue;
-  // String? tipoPuestoValue;
-  // String? experienciaLaboralValue;
-  // String? tituloAnuncioValue;
-  // String? lugarValue;
-  // String? sueldoValue;
-  // String? descripcionValue;
-
-  // final puestoBuscadoController = TextEditingController();
-  // final tipoPuestoController = TextEditingController();
-  // final experienciaLaboralController = TextEditingController();
-  // final tituloAnuncioController = TextEditingController();
-  // final lugarController = TextEditingController();
-  // final sueldoController = TextEditingController();
-  // final descriocionController = TextEditingController();
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -132,6 +118,13 @@ class _FormNewAdState extends State<FormNewAd> {
                   },
                   ),
                   TextFormField(
+                    controller: endDateController,
+                    decoration: InputDecoration(labelText: "Fecha de finalizacion"),
+                    onSaved: (value){
+                    // sueldoValue = value;
+                    },
+              ),
+                  TextFormField(
                   controller: this.specialtyController,
                   decoration: InputDecoration(labelText: "Especialidad (id)"),
                   onSaved: (value){
@@ -179,13 +172,8 @@ class _FormNewAdState extends State<FormNewAd> {
     );
   }
 
-  // void createOffer(){
-  //   final newOffer = new Offer(
-  //     title: this.tituloAnuncioValue, 
-  //     description: this.descripcionValue, 
-  //     paymentAmount: paymentAmount, 
-  //     monthDuration: monthDuration, 
-  //     specialty: specialty)
-  //   httpHelper.createoffer(offer)
-  // }
-}
+  }
+
+
+
+

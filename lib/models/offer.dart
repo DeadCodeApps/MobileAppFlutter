@@ -43,6 +43,7 @@ class Offer {
         startDate: json['startDate'],
         endDate: json['endDate'],
         specialty: Specialty.fromJson(json["specialty"]),
+        // specialtyId: json["specialtyId"],
         active: json["active"],
       );
 
@@ -55,6 +56,7 @@ class Offer {
         "startDate": startDate,
         "endDate": endDate,
         "specialty": specialty == null ? null : specialty!.toJson(),
+        // "specialtyId": specialtyId,
         "active": active,
       };
 }
