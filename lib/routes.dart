@@ -1,4 +1,4 @@
-import 'dart:js';
+// import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/views/auth/welcome/welcome_page.dart';

@@ -1,9 +1,9 @@
-import 'dart:html';
+// import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/components/offer_detailed.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
-import 'package:freelance_world_flutter/shared/http_interceptor.dart';
+// import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/shared/side_menu.dart';
 import 'package:freelance_world_flutter/theme/constants.dart';
 
