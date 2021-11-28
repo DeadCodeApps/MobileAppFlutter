@@ -1,13 +1,13 @@
 import 'dart:convert';
-import 'dart:html';
+// import 'dart:html';
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
+// import 'dart:convert';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:freelance_world_flutter/models/offer.dart';
 import 'package:freelance_world_flutter/models/postulation.dart';
-import 'package:freelance_world_flutter/services/freelancer_service.dart';
+// import 'package:freelance_world_flutter/services/freelancer_service.dart';
 import 'package:freelance_world_flutter/shared/http_interceptor.dart';
 import 'package:freelance_world_flutter/views/freelancer/freelacer_postulate/offer_detail_page.dart';
 

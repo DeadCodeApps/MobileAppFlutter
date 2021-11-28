@@ -4,8 +4,11 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:freelance_world_flutter/models/offer.dart';
+import 'package:freelance_world_flutter/services/freelancer_service.dart';
+import 'package:freelance_world_flutter/services/user_service.dart';
 import 'package:freelance_world_flutter/theme/constants.dart';
 import 'package:freelance_world_flutter/views/freelancer/freelacer_postulate/offer_detail_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OfferCard extends StatelessWidget {
   final Offer offer;
@@ -13,9 +16,15 @@ class OfferCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*String userTypeOffer = "";
+    Future<String> getUserTypeOffer() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final int userId = int.parse(prefs.getString('id')!);
+      return getUsertype(userId.toString());
+    }*/
+
     return GestureDetector(
       onTap: () {
-        print(offer.id);
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => OfferDetail(offer: offer)));
       },
