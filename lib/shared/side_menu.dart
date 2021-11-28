@@ -81,16 +81,13 @@ class SideMenu extends StatelessWidget {
           ListTile(
             title: Text('Inicio'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/home');
-              //
-            },
-          ),
-          ListTile(
-            title: Text('Postular'),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.pushNamed(context, '/home');
+              if (userType == "FREELANCER") {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/home');
+              } else if (userType == "EMPLOYER") {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, '/home_employer');
+              }
               //
             },
           ),

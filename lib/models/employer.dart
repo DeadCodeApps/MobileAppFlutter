@@ -67,7 +67,7 @@ class Employer {
         "id": id,
         "username": username,
         "email": email,
-        "password": email,
+        "password": password,
         "firstname": firstname,
         "lastname": lastname,
         "webPage": webPage,
